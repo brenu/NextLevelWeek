@@ -79,14 +79,14 @@ const Points = () => {
     }).then(res => {
       setPoints(res.data);
     });
-  }, []);
+  }, [selectedItems]);
 
   function handleNavigateBack() {
     navigation.goBack();
   }
 
   function handleNavigateToDetail(id: number) {
-    navigation.navigate('Detail', { point_id: id});
+    navigation.navigate('Detail', { point_id: id });
   }
 
   function handleSelectedItem(id: number){
