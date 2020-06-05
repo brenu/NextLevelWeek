@@ -15,7 +15,7 @@ const Home = () => {
       uf,
       city,
     });
-  } 
+  }  
 
   return (
     <ImageBackground source={require('../../assets/home-background.png')} imageStyle={{ width: 274, height: 368}}   style={styles.container}>
