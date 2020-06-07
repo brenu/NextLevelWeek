@@ -1,6 +1,6 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { FiArrowLeft, FiCheckCircle, } from 'react-icons/fi';
+import { FiArrowLeft, FiCheckCircle } from 'react-icons/fi';
 import { Map, TileLayer, Marker } from 'react-leaflet';
 import { LeafletMouseEvent } from 'leaflet';
 import axios from 'axios';
@@ -19,6 +19,7 @@ interface Item {
 }
 
 interface IBGEUFResponse {
+    nome: string;
     sigla: string;
 }
 
@@ -39,7 +40,7 @@ interface IBGECityResponse {
 const CreatePoint = () => {
     const [ createState, setCreateState ] = useState(false);
     const [ items, setItems ] = useState<Item[]>([]);
-    const [ ufs, setUfs ] = useState<string[]>([]);
+    const [ ufs, setUfs ] = useState<IBGEUFResponse[]>([]);
     const [ cities, setCities ] = useState<string[]>([]);
     
     
@@ -78,7 +79,10 @@ const CreatePoint = () => {
 
     useEffect(() => {
         axios.get<IBGEUFResponse[]>('https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome').then(res => {
-            const ufInitials = res.data.map(uf => uf.sigla);
+            const ufInitials = res.data.map(uf => ({
+                nome: uf.nome,
+                sigla: uf.sigla
+            }));
 
             setUfs(ufInitials);
         });
@@ -240,7 +244,7 @@ const CreatePoint = () => {
                             >
                                 <option value="0">Selecione uma UF</option>
                                 {ufs.map(uf=> (
-                                    <option key={uf} value={uf}>{uf}</option>
+                                   <option key={uf.nome} value={uf.sigla}>{uf.nome} - {uf.sigla}</option>
                                 ))}
                             </select>
                         </div>
